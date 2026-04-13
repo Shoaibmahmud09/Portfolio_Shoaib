@@ -1,0 +1,2945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Md Shoaib Mahmud | Infrastructure Resilience &amp; Operations Research</title>
+<meta name="description" content="Md Shoaib Mahmud - Lecturer and Researcher in Industrial and Production Engineering at MIST, Bangladesh. Research in infrastructure resilience, operations research, and graph neural networks.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy:      #112033;
+  --navy-mid:  #1a3248;
+  --slate:     #334155;
+  --steel:     #64748b;
+  --silver:    #94a3b8;
+  --cloud:     #d5deea;
+  --ghost:     #e5e7eb;
+  --snow:      #f3eee4;
+  --white:     #ffffff;
+  --accent:    #0f6b62;
+  --accent-l:  #118276;
+  --accent-xl: #daf3ee;
+  --teal:      #0f6b62;
+  --teal-l:    #8af0e5;
+  --warm:      #b97934;
+  --font-sans: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --max-w: 1100px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: var(--font-sans);
+  color: var(--slate);
+  background:
+    radial-gradient(circle at 15% 10%, rgba(15,107,98,0.08), transparent 30%),
+    radial-gradient(circle at 85% 15%, rgba(185,121,52,0.14), transparent 26%),
+    linear-gradient(180deg, #faf6ed 0%, var(--snow) 100%);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a { color: var(--accent); text-decoration: none; transition: color var(--transition); }
+a:hover { color: var(--accent-l); }
+
+img { max-width: 100%; display: block; }
+
+::selection { background: var(--accent-xl); color: var(--navy); }
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.nav.scrolled {
+  border-bottom-color: var(--ghost);
+  box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+}
+
+.nav-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+.nav-logo {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--navy);
+  letter-spacing: -0.02em;
+}
+.nav-logo span { color: var(--accent); }
+
+.nav-links { display: flex; gap: 0.25rem; list-style: none; }
+
+.nav-links a {
+  display: block;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--steel);
+  border-radius: 6px;
+  transition: color var(--transition), background var(--transition);
+  letter-spacing: 0.01em;
+}
+.nav-links a:hover { color: var(--navy); background: var(--snow); }
+
+.nav-toggle {
+  display: none;
+  background: none; border: none; cursor: pointer;
+  width: 32px; height: 32px;
+  flex-direction: column; justify-content: center; align-items: center; gap: 5px;
+}
+.nav-toggle span {
+  display: block; width: 22px; height: 2px; background: var(--navy);
+  border-radius: 2px; transition: var(--transition);
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  background: linear-gradient(165deg, var(--navy) 0%, var(--navy-mid) 55%, #1e3a5f 100%);
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -30%; right: -20%;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -20%; left: -10%;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(13,148,136,0.08) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.hero-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 8rem 2rem 6rem;
+  position: relative; z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4rem;
+  align-items: center;
+}
+
+.hero-text { max-width: 640px; }
+
+.hero-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--teal-l);
+  margin-bottom: 1.5rem;
+}
+
+.hero-label::before {
+  content: '';
+  display: block;
+  width: 24px; height: 2px;
+  background: var(--teal-l);
+  border-radius: 1px;
+}
+
+.hero h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2.4rem, 5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--white);
+  letter-spacing: -0.02em;
+  margin-bottom: 1.25rem;
+}
+
+.hero-subtitle {
+  font-size: 1.1rem;
+  color: var(--cloud);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  max-width: 540px;
+}
+
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.hero-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--silver);
+}
+
+.hero-meta-item i { color: var(--accent-l); font-size: 0.8rem; }
+
+.hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition);
+  font-family: var(--font-sans);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--white);
+}
+.btn-primary:hover { background: var(--accent-l); color: var(--white); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,99,235,0.3); }
+
+.btn-outline {
+  background: transparent;
+  color: var(--cloud);
+  border: 1.5px solid rgba(255,255,255,0.2);
+}
+.btn-outline:hover { border-color: rgba(255,255,255,0.5); color: var(--white); }
+
+.hero-portrait {
+  width: 260px;
+  height: 320px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--teal) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-portrait-placeholder {
+  text-align: center;
+  color: rgba(255,255,255,0.7);
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 1.5rem;
+}
+
+.hero-portrait-placeholder i {
+  font-size: 3rem;
+  margin-bottom: 0.75rem;
+  display: block;
+  opacity: 0.5;
+}
+
+/* ============================================================
+   SECTION COMMON
+   ============================================================ */
+.section {
+  padding: 5.5rem 2rem;
+}
+
+.section-alt { background: var(--snow); }
+
+.section-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+
+.section-header {
+  margin-bottom: 3rem;
+}
+
+.section-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.section-title {
+  font-family: var(--font-serif);
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+
+.section-line {
+  width: 40px; height: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+  margin-top: 0.75rem;
+}
+
+/* ============================================================
+   ABOUT
+   ============================================================ */
+.about-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.about-text p {
+  font-size: 1.02rem;
+  margin-bottom: 1.25rem;
+  color: var(--slate);
+}
+
+.about-text p:first-of-type {
+  font-size: 1.08rem;
+  color: var(--navy);
+}
+
+.about-sidebar {
+  background: var(--white);
+  border: 1px solid var(--ghost);
+  border-radius: 12px;
+  padding: 1.75rem;
+}
+
+.sidebar-item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--ghost);
+}
+.sidebar-item:last-child { border-bottom: none; }
+
+.sidebar-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--steel);
+  margin-bottom: 0.2rem;
+}
+
+.sidebar-value {
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--navy);
+}
+
+/* ============================================================
+   RESEARCH INTERESTS
+   ============================================================ */
+.interests-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.25rem;
+}
+
+.interest-card {
+  background: var(--white);
+  border: 1px solid var(--ghost);
+  border-radius: 10px;
+  padding: 1.5rem;
+  transition: all var(--transition);
+}
+.interest-card:hover { border-color: var(--accent-xl); box-shadow: 0 4px 16px rgba(37,99,235,0.06); transform: translateY(-2px); }
+
+.interest-icon {
+  width: 40px; height: 40px;
+  background: var(--accent-xl);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  color: var(--accent);
+  font-size: 1rem;
+}
+
+.interest-card h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 0.4rem;
+}
+
+.interest-card p {
+  font-size: 0.83rem;
+  color: var(--steel);
+  line-height: 1.6;
+}
+
+/* ============================================================
+   RISE LAB
+   ============================================================ */
+.lab-card {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+  border-radius: 16px;
+  padding: 3rem;
+  color: var(--white);
+  position: relative;
+  overflow: hidden;
+}
+
+.lab-card::before {
+  content: '';
+  position: absolute;
+  top: -50%; right: -30%;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(37,99,235,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.lab-header {
+  display: flex;
+  align-items: start;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  position: relative; z-index: 1;
+}
+
+.lab-icon {
+  width: 52px; height: 52px;
+  background: rgba(37,99,235,0.2);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  color: var(--accent-l);
+  flex-shrink: 0;
+}
+
+.lab-title {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.lab-supervisor {
+  font-size: 0.88rem;
+  color: var(--cloud);
+}
+
+.lab-desc {
+  font-size: 0.95rem;
+  color: var(--cloud);
+  line-height: 1.75;
+  margin-bottom: 2rem;
+  max-width: 800px;
+  position: relative; z-index: 1;
+}
+
+.lab-projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  position: relative; z-index: 1;
+}
+
+.lab-project {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 1.5rem;
+}
+
+.lab-project-tag {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+}
+
+.tag-review { background: rgba(245,158,11,0.2); color: #fbbf24; }
+.tag-published { background: rgba(16,185,129,0.2); color: #34d399; }
+.tag-prep { background: rgba(139,92,246,0.2); color: #a78bfa; }
+
+.lab-project h4 {
+  font-size: 0.92rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  line-height: 1.4;
+}
+
+.lab-project p {
+  font-size: 0.8rem;
+  color: var(--silver);
+  line-height: 1.6;
+}
+
+.lab-project .journal {
+  font-size: 0.75rem;
+  color: var(--teal-l);
+  font-style: italic;
+  margin-top: 0.5rem;
+}
+
+/* ============================================================
+   PUBLICATIONS
+   ============================================================ */
+.pub-stats {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.pub-stat {
+  text-align: center;
+  padding: 1.25rem 2rem;
+  background: var(--white);
+  border: 1px solid var(--ghost);
+  border-radius: 10px;
+  min-width: 120px;
+}
+
+.pub-stat-num {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.pub-stat-label {
+  font-size: 0.75rem;
+  color: var(--steel);
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+
+.pub-category {
+  margin-bottom: 2.5rem;
+}
+
+.pub-category-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--ghost);
+}
+
+.pub-item {
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--ghost);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+.pub-item:last-child { border-bottom: none; }
+
+.pub-number {
+  width: 28px; height: 28px;
+  background: var(--snow);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--steel);
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+
+.pub-info h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--navy);
+  line-height: 1.5;
+  margin-bottom: 0.3rem;
+}
+
+.pub-authors {
+  font-size: 0.8rem;
+  color: var(--steel);
+  margin-bottom: 0.2rem;
+}
+
+.pub-authors strong { color: var(--navy); font-weight: 600; }
+
+.pub-venue {
+  font-size: 0.8rem;
+  color: var(--accent);
+  font-style: italic;
+}
+
+.pub-status {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
+.status-review { background: #fef3c7; color: #92400e; }
+.status-prep { background: #ede9fe; color: #5b21b6; }
+
+/* ============================================================
+   EDUCATION
+   ============================================================ */
+.edu-card {
+  background: var(--white);
+  border: 1px solid var(--ghost);
+  border-radius: 12px;
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.5rem;
+}
+
+.edu-icon {
+  width: 48px; height: 48px;
+  background: var(--accent-xl);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  font-size: 1.1rem;
+}
+
+.edu-degree {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.15rem;
+}
+
+.edu-school {
+  font-size: 0.92rem;
+  color: var(--slate);
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.edu-date {
+  font-size: 0.82rem;
+  color: var(--steel);
+  margin-bottom: 0.75rem;
+}
+
+.edu-highlights {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.edu-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 0.3rem 0.7rem;
+  background: var(--snow);
+  border-radius: 6px;
+  color: var(--slate);
+}
+
+.edu-badge i { font-size: 0.7rem; color: var(--accent); }
+
+.thesis-box {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  background: var(--snow);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+}
+
+.thesis-box h4 {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 0.4rem;
+}
+
+.thesis-box p {
+  font-size: 0.82rem;
+  color: var(--steel);
+  line-height: 1.6;
+}
+
+/* ============================================================
+   TEACHING
+   ============================================================ */
+.teaching-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.teaching-card {
+  background: var(--white);
+  border: 1px solid var(--ghost);
+  border-radius: 10px;
+  padding: 1.5rem;
+}
+
+.teaching-card h3 {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 0.75rem;
+}
+
+.course-list {
+  list-style: none;
+}
+
+.course-list li {
+  font-size: 0.83rem;
+  color: var(--slate);
+  padding: 0.35rem 0;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.course-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.75rem;
+  width: 5px; height: 5px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+/* ============================================================
+   SKILLS
+   ============================================================ */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.25rem;
+}
+
+.skill-group {
+  background: var(--white);
+  border: 1px solid var(--ghost);
+  border-radius: 10px;
+  padding: 1.5rem;
+}
+
+.skill-group h3 {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--navy);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--ghost);
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.skill-tag {
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 0.3rem 0.65rem;
+  background: var(--snow);
+  border-radius: 6px;
+  color: var(--slate);
+  transition: all var(--transition);
+}
+
+.skill-tag:hover { background: var(--accent-xl); color: var(--accent); }
+
+/* ============================================================
+   AWARDS
+   ============================================================ */
+.awards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.award-card {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: var(--white);
+  border: 1px solid var(--ghost);
+  border-radius: 10px;
+}
+
+.award-icon {
+  width: 42px; height: 42px;
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: #b45309;
+  flex-shrink: 0;
+}
+
+.award-card h3 {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 0.15rem;
+}
+
+.award-card .award-date {
+  font-size: 0.78rem;
+  color: var(--accent);
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+}
+
+.award-card p {
+  font-size: 0.82rem;
+  color: var(--steel);
+  line-height: 1.5;
+}
+
+/* ============================================================
+   CV SECTION
+   ============================================================ */
+.cv-banner {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+  border-radius: 16px;
+  padding: 3rem;
+  text-align: center;
+  color: var(--white);
+}
+
+.cv-banner h3 {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.cv-banner p {
+  font-size: 0.92rem;
+  color: var(--cloud);
+  margin-bottom: 1.5rem;
+}
+
+/* ============================================================
+   CONTACT
+   ============================================================ */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+}
+
+.contact-text h3 {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.75rem;
+}
+
+.contact-text p {
+  font-size: 0.95rem;
+  color: var(--steel);
+  margin-bottom: 2rem;
+  line-height: 1.7;
+}
+
+.contact-item {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  align-items: center;
+}
+
+.contact-item-icon {
+  width: 42px; height: 42px;
+  background: var(--accent-xl);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.contact-item-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--steel);
+}
+
+.contact-item-value {
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--navy);
+}
+
+.social-links {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.social-link {
+  width: 42px; height: 42px;
+  border: 1px solid var(--ghost);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--steel);
+  font-size: 1rem;
+  transition: all var(--transition);
+}
+.social-link:hover {
+  background: var(--accent);
+  color: var(--white);
+  border-color: var(--accent);
+}
+
+.contact-form {
+  background: var(--white);
+  border: 1px solid var(--ghost);
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+.form-group { margin-bottom: 1.25rem; }
+
+.form-group label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 0.4rem;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.88rem;
+  font-family: var(--font-sans);
+  border: 1px solid var(--ghost);
+  border-radius: 8px;
+  color: var(--navy);
+  background: var(--snow);
+  transition: border-color var(--transition);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--white);
+}
+
+.form-group textarea { resize: vertical; min-height: 100px; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+  background: var(--navy);
+  padding: 2.5rem 2rem;
+  text-align: center;
+}
+
+.footer p {
+  font-size: 0.82rem;
+  color: var(--silver);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 900px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-portrait { display: none; }
+  .about-content { grid-template-columns: 1fr; }
+  .about-sidebar { order: -1; }
+  .teaching-grid { grid-template-columns: 1fr; }
+  .awards-grid { grid-template-columns: 1fr; }
+  .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 64px; left: 0; right: 0;
+    background: var(--white);
+    border-bottom: 1px solid var(--ghost);
+    flex-direction: column;
+    padding: 1rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  }
+  .nav-links.open { display: flex; }
+  .nav-toggle { display: flex; }
+  .section { padding: 3.5rem 1.25rem; }
+  .hero-inner { padding: 7rem 1.25rem 4rem; }
+  .lab-card { padding: 2rem; }
+  .lab-projects { grid-template-columns: 1fr; }
+  .pub-stats { gap: 1rem; }
+  .pub-stat { flex: 1; min-width: 80px; padding: 1rem; }
+  .pub-item { grid-template-columns: 1fr; }
+  .pub-number { display: none; }
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+.fade-in {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================================
+   2026 REDESIGN OVERRIDES
+   ============================================================ */
+.section-alt { background: transparent; position: relative; }
+.section-alt::before {
+  content: '';
+  position: absolute;
+  inset: 1rem 0;
+  background: rgba(255,255,255,0.34);
+  border-top: 1px solid rgba(255,255,255,0.6);
+  border-bottom: 1px solid rgba(17,32,51,0.06);
+  z-index: 0;
+}
+.section-alt > * { position: relative; z-index: 1; }
+
+@keyframes driftGlow {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(18px, -22px, 0) scale(1.06); }
+}
+
+@keyframes gridShift {
+  0% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(-12px, 10px, 0); }
+  100% { transform: translate3d(8px, -8px, 0); }
+}
+
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes auroraDrift {
+  0% { transform: translate3d(-2%, 0, 0) scale(1); }
+  50% { transform: translate3d(3%, -3%, 0) scale(1.04); }
+  100% { transform: translate3d(-1%, 2%, 0) scale(1.08); }
+}
+
+@keyframes beamSweep {
+  0% { transform: rotate(-10deg) translate3d(-6%, 0, 0); opacity: 0.2; }
+  50% { transform: rotate(-6deg) translate3d(3%, -2%, 0); opacity: 0.34; }
+  100% { transform: rotate(-12deg) translate3d(8%, 2%, 0); opacity: 0.2; }
+}
+
+@keyframes pageBackdrop {
+  0% { background-position: 10% 6%, 88% 10%, 52% 78%, center; }
+  100% { background-position: 16% 12%, 82% 16%, 46% 86%, center; }
+}
+
+body {
+  background:
+    radial-gradient(circle at 10% 6%, rgba(80,157,145,0.14), transparent 28%),
+    radial-gradient(circle at 88% 10%, rgba(201,167,116,0.14), transparent 24%),
+    radial-gradient(circle at 52% 78%, rgba(18,92,86,0.09), transparent 32%),
+    linear-gradient(180deg, #fbf7ef 0%, #f5efe5 56%, #f6f1e9 100%);
+  background-size: 118% 118%, 114% 114%, 120% 120%, 100% 100%;
+  animation: pageBackdrop 28s ease-in-out infinite alternate;
+}
+
+.nav {
+  background: rgba(250,247,239,0.78);
+  border-bottom-color: rgba(255,255,255,0.28);
+}
+
+.nav.scrolled {
+  background: rgba(250,247,239,0.84);
+  border-bottom-color: rgba(17,32,51,0.08);
+  box-shadow: 0 10px 30px rgba(15,28,42,0.08);
+}
+
+.nav-links a {
+  position: relative;
+  padding: 0.58rem 0.95rem;
+  border: 1px solid transparent;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 0.9rem;
+  right: 0.9rem;
+  bottom: 0.38rem;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(15,107,98,0.95), rgba(185,121,52,0.95));
+  opacity: 0;
+  transform: scaleX(0.4);
+  transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+.nav-links a.active,
+.nav-links a:hover {
+  color: var(--navy);
+  background: rgba(255,255,255,0.55);
+  border-color: rgba(17,32,51,0.06);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+}
+
+.nav-links a.active::after,
+.nav-links a:hover::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.section {
+  position: relative;
+}
+
+.section-inner {
+  position: relative;
+}
+
+.section-header {
+  margin-bottom: 2.3rem;
+  max-width: 760px;
+}
+
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.42rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid rgba(15,107,98,0.12);
+  background: linear-gradient(145deg, rgba(255,255,255,0.78), rgba(241,248,246,0.82));
+  box-shadow: 0 10px 24px rgba(17,32,51,0.05);
+}
+
+.section-title {
+  font-size: clamp(2rem, 3.4vw, 2.75rem);
+  line-height: 1.12;
+}
+
+.section-intro {
+  margin-top: 0.95rem;
+  font-size: 0.98rem;
+  color: rgba(51, 65, 85, 0.88);
+  max-width: 760px;
+}
+
+.hero-label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.55rem;
+}
+.hero {
+  background:
+    radial-gradient(circle at 14% 12%, rgba(52, 121, 113, 0.32), transparent 26%),
+    radial-gradient(circle at 84% 14%, rgba(198, 154, 97, 0.24), transparent 24%),
+    radial-gradient(circle at 60% 82%, rgba(17, 90, 84, 0.2), transparent 32%),
+    linear-gradient(145deg, #09111a 0%, #111c2b 34%, #1a2531 68%, #213444 100%);
+}
+.hero-label::before { display: none; }
+.hero-role-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+.hero-role-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.08);
+  color: #d7e8ef;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.hero-role-line {
+  color: rgba(215,232,239,0.86);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.hero-badges,
+.pub-filters,
+.pub-links,
+.contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+.hero-badges {
+  margin: 1.55rem 0 1.25rem;
+  align-items: flex-start;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.86);
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.35;
+  transition: transform var(--transition), background var(--transition), border-color var(--transition);
+}
+.hero-badge:hover {
+  transform: translateY(-3px);
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.18);
+}
+.hero-actions {
+  margin-top: 0.15rem;
+}
+.hero-actions .btn {
+  min-width: 12rem;
+  justify-content: center;
+}
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.9rem;
+  margin-top: 2rem;
+}
+.hero-stat {
+  --spot-x: 50%;
+  --spot-y: 50%;
+  --spot-opacity: 0;
+  padding: 1rem;
+  border-radius: 14px;
+  background:
+    radial-gradient(180px circle at var(--spot-x) var(--spot-y), rgb(255 255 255 / calc(var(--spot-opacity) * 0.26)) 0%, transparent 68%),
+    linear-gradient(160deg, rgba(255,255,255,0.11), rgba(255,255,255,0.05));
+  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(14px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 18px 40px rgba(5,14,24,0.16);
+  transition: transform 0.35s ease, border-color 0.35s ease, background 0.35s ease;
+}
+.hero-stat strong {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--white);
+}
+.hero-stat span {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.74);
+}
+.hero-stat:hover {
+  transform: translateY(-5px);
+  border-color: rgba(255,255,255,0.18);
+  background:
+    radial-gradient(180px circle at var(--spot-x) var(--spot-y), rgb(255 255 255 / calc(var(--spot-opacity) * 0.24 + 0.08)) 0%, transparent 68%),
+    linear-gradient(160deg, rgba(255,255,255,0.14), rgba(255,255,255,0.07));
+}
+.hero h1 {
+  text-shadow: 0 10px 30px rgba(0,0,0,0.18);
+}
+.hero::before,
+.hero::after {
+  filter: blur(18px);
+}
+.hero::before {
+  top: -22%;
+  right: -10%;
+  width: 760px;
+  height: 760px;
+  background: radial-gradient(circle, rgba(76, 170, 159, 0.18) 0%, rgba(76, 170, 159, 0.08) 34%, transparent 72%);
+  animation: driftGlow 18s ease-in-out infinite alternate;
+}
+.hero::after {
+  bottom: -24%;
+  left: -14%;
+  width: 620px;
+  height: 620px;
+  background: radial-gradient(circle, rgba(205, 167, 113, 0.16) 0%, rgba(205, 167, 113, 0.06) 36%, transparent 74%);
+  animation: driftGlow 22s ease-in-out infinite alternate-reverse;
+}
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.55;
+  overflow: hidden;
+  animation: gridShift 24s ease-in-out infinite alternate;
+  transform: translate3d(calc(var(--hero-x, 0px) * -0.18), calc(var(--hero-y, 0px) * -0.18), 0);
+  transition: transform 0.45s ease;
+}
+.hero-grid::before,
+.hero-grid::after {
+  content: '';
+  position: absolute;
+  inset: -8%;
+  pointer-events: none;
+}
+.hero-grid::before {
+  background:
+    radial-gradient(circle at 18% 26%, rgba(122, 221, 199, 0.16) 0%, transparent 28%),
+    radial-gradient(circle at 78% 18%, rgba(237, 203, 153, 0.14) 0%, transparent 24%),
+    radial-gradient(circle at 58% 78%, rgba(104, 171, 163, 0.12) 0%, transparent 22%);
+  filter: blur(14px);
+  mix-blend-mode: screen;
+  opacity: 0.88;
+  transform: translate3d(calc(var(--hero-x, 0px) * 0.2), calc(var(--hero-y, 0px) * 0.14), 0);
+  animation: auroraDrift 26s ease-in-out infinite alternate;
+}
+.hero-grid::after {
+  inset: -18% -10%;
+  background:
+    linear-gradient(112deg, transparent 34%, rgba(255,255,255,0.08) 47%, rgba(255,255,255,0.03) 54%, transparent 66%),
+    linear-gradient(120deg, transparent 42%, rgba(232, 205, 164, 0.08) 50%, transparent 58%);
+  opacity: 0.34;
+  transform: translate3d(calc(var(--hero-x, 0px) * -0.14), calc(var(--hero-y, 0px) * -0.1), 0);
+  animation: beamSweep 20s ease-in-out infinite alternate;
+}
+.hero-portrait {
+  width: 330px;
+  height: auto;
+  padding: 1rem;
+  background: linear-gradient(145deg, rgba(255,255,255,0.18), rgba(255,255,255,0.04));
+  border: 1px solid rgba(255,255,255,0.16);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.24);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transform: translate3d(calc(var(--hero-x, 0px) * 0.12), calc(var(--hero-y, 0px) * 0.12), 0);
+  transition: transform 0.45s ease;
+}
+.hero-image-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  aspect-ratio: 0.88 / 1;
+}
+.hero-image-frame::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 38%;
+  background: linear-gradient(180deg, transparent 0%, rgba(17,32,51,0.28) 100%);
+  pointer-events: none;
+}
+.hero-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 18px;
+}
+.hero-note {
+  position: static;
+  width: auto;
+  padding: 1rem 1.05rem;
+  border-radius: 18px;
+  background: linear-gradient(145deg, rgba(255,255,255,0.94), rgba(246,241,233,0.94));
+  border: 1px solid rgba(255,255,255,0.6);
+  box-shadow: 0 16px 40px rgba(17,32,51,0.18);
+  animation: floatCard 10s ease-in-out infinite;
+}
+.hero-note strong {
+  display: inline-flex;
+  padding: 0.35rem 0.6rem;
+  margin-bottom: 0.45rem;
+  border-radius: 999px;
+  background: rgba(185,121,52,0.14);
+  color: var(--warm);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.hero-note p { font-size: 0.9rem; color: var(--slate); line-height: 1.7; }
+
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1d7d73 0%, #2f6f72 42%, #c69a61 160%);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 16px 32px rgba(15,107,98,0.24), inset 0 1px 0 rgba(255,255,255,0.16);
+}
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 20%, rgba(255,255,255,0.16) 50%, transparent 80%);
+  transform: translateX(-120%);
+  transition: transform 0.65s ease;
+}
+.btn-primary:hover::after {
+  transform: translateX(120%);
+}
+.btn-outline {
+  background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+  border: 1.5px solid rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.92);
+  backdrop-filter: blur(10px);
+}
+.btn-outline:hover {
+  background: linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.06));
+  border-color: rgba(255,255,255,0.3);
+  color: var(--white);
+  box-shadow: 0 14px 28px rgba(8,18,28,0.18);
+}
+
+.section-title {
+  letter-spacing: -0.03em;
+}
+.section-line {
+  width: 64px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent), var(--warm));
+  box-shadow: 0 8px 20px rgba(15,107,98,0.18);
+}
+
+.about-sidebar {
+  position: sticky;
+  top: 5.75rem;
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,245,237,0.96));
+  border-color: rgba(17,32,51,0.08);
+  box-shadow: 0 22px 44px rgba(17,32,51,0.08);
+}
+
+.sidebar-item {
+  position: relative;
+  padding-left: 1rem;
+}
+
+.sidebar-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 1.08rem;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--warm));
+  box-shadow: 0 0 0 4px rgba(15,107,98,0.08);
+}
+
+.interests-grid {
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 1.15rem;
+}
+
+.interest-card {
+  grid-column: span 4;
+  min-height: 100%;
+}
+
+.interest-card:nth-child(1),
+.interest-card:nth-child(2) {
+  grid-column: span 6;
+}
+
+.experience-grid {
+  display: grid;
+  gap: 1rem;
+}
+.experience-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: var(--white);
+  border: 1px solid var(--ghost);
+  border-radius: 14px;
+  box-shadow: 0 10px 26px rgba(17,32,51,0.06);
+}
+.interest-card,
+.lab-project,
+.experience-card,
+.pub-card-dynamic,
+.teaching-card,
+.skill-group,
+.award-card,
+.edu-card,
+.contact-panel,
+.cv-banner,
+.pub-stat,
+.footprint-card {
+  --spot-x: 50%;
+  --spot-y: 50%;
+  --spot-opacity: 0;
+  background:
+    radial-gradient(240px circle at var(--spot-x) var(--spot-y), rgb(255 255 255 / calc(var(--spot-opacity) * 0.72)) 0%, rgb(255 255 255 / calc(var(--spot-opacity) * 0.18)) 26%, transparent 64%),
+    linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,246,239,0.96));
+  border-color: rgba(17,32,51,0.08);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease, background 0.35s ease;
+}
+.interest-card:hover,
+.lab-project:hover,
+.experience-card:hover,
+.pub-card-dynamic:hover,
+.teaching-card:hover,
+.skill-group:hover,
+.award-card:hover,
+.edu-card:hover,
+.contact-panel:hover,
+.cv-banner:hover,
+.pub-stat:hover,
+.footprint-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 36px rgba(17,32,51,0.12);
+}
+.interest-card h3,
+.experience-card h3,
+.pub-card-dynamic .pub-title,
+.teaching-card h3,
+.skill-group h3,
+.award-card h3,
+.contact-panel h3,
+.footprint-card h3 {
+  color: #16263a;
+}
+.experience-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: linear-gradient(145deg, rgba(15,107,98,0.12), rgba(185,121,52,0.12));
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+.experience-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.8rem;
+  margin-bottom: 0.35rem;
+  font-size: 0.8rem;
+  color: var(--steel);
+}
+.experience-meta strong {
+  color: var(--warm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.experience-card:nth-child(2) { transition-delay: 0.04s; }
+.experience-card:nth-child(3) { transition-delay: 0.08s; }
+.experience-card:nth-child(4) { transition-delay: 0.12s; }
+
+.pub-filters { margin-bottom: 1.5rem; }
+.pub-filter {
+  padding: 0.75rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(17,32,51,0.08);
+  background: rgba(255,255,255,0.78);
+  color: var(--steel);
+  font-weight: 700;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition);
+}
+.pub-filter.active,
+.pub-filter:hover {
+  background: var(--navy);
+  color: var(--white);
+  border-color: transparent;
+}
+.pub-grid-dynamic {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+.pub-card-dynamic {
+  padding: 1.4rem;
+  background-color: transparent;
+  border: 1px solid var(--ghost);
+  border-radius: 14px;
+  box-shadow: 0 10px 26px rgba(17,32,51,0.06);
+  display: grid;
+  gap: 0.7rem;
+  overflow: hidden;
+  position: relative;
+}
+.pub-card-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+  align-items: start;
+}
+.pub-year {
+  font-size: 0.78rem;
+  color: var(--steel);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+.pub-card-dynamic .pub-title {
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.5;
+}
+.pub-note {
+  font-size: 0.8rem;
+  color: var(--steel);
+}
+.pub-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--warm);
+  font-weight: 700;
+}
+.pub-link:hover {
+  color: #8d5a21;
+}
+.interest-card::after,
+.lab-project::after,
+.experience-card::after,
+.pub-card-dynamic::after,
+.teaching-card::after,
+.skill-group::after,
+.award-card::after,
+.edu-card::after,
+.contact-panel::after,
+.cv-banner::after,
+.pub-stat::after,
+.footprint-card::after,
+.pub-filter::after,
+.profile-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 14%, rgba(255,255,255,0.18) 42%, rgba(255,255,255,0.04) 54%, transparent 82%);
+  transform: translateX(-130%);
+  transition: transform 0.85s ease;
+  pointer-events: none;
+}
+.interest-card:hover::after,
+.lab-project:hover::after,
+.experience-card:hover::after,
+.pub-card-dynamic:hover::after,
+.teaching-card:hover::after,
+.skill-group:hover::after,
+.award-card:hover::after,
+.edu-card:hover::after,
+.contact-panel:hover::after,
+.cv-banner:hover::after,
+.pub-stat:hover::after,
+.footprint-card:hover::after,
+.pub-filter:hover::after,
+.profile-link:hover::after {
+  transform: translateX(130%);
+}
+.pub-card-dynamic::before,
+.experience-card::before,
+.contact-panel::before,
+.interest-card::before,
+.footprint-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), rgba(185,121,52,0.9));
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.pub-card-dynamic:hover::before,
+.experience-card:hover::before,
+.contact-panel:hover::before,
+.interest-card:hover::before,
+.footprint-card:hover::before {
+  opacity: 1;
+}
+.pub-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.34rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.pub-pill.journal, .pub-pill.proceeding { background: rgba(15,107,98,0.12); color: var(--accent); }
+.pub-pill.review { background: rgba(185,121,52,0.14); color: #9a6225; }
+.pub-pill.accepted { background: rgba(53,146,86,0.16); color: #2d7b49; }
+.pub-pill.prep { background: rgba(100,90,190,0.14); color: #564ab3; }
+
+.contact-grid {
+  grid-template-columns: minmax(0, 1.12fr) minmax(280px, 0.88fr);
+  align-items: start;
+  gap: 1.25rem;
+}
+.contact-panel {
+  background-color: transparent;
+  border: 1px solid var(--ghost);
+  border-radius: 14px;
+  padding: 1.75rem;
+  box-shadow: 0 10px 26px rgba(17,32,51,0.06);
+}
+.contact-panel p + p { margin-top: 1rem; }
+.contact-panel h3 {
+  font-size: 1.15rem;
+  color: var(--navy);
+  margin-bottom: 0.45rem;
+}
+.contact-compact {
+  display: grid;
+  gap: 0.8rem;
+  margin-top: 1.25rem;
+}
+.contact-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  width: fit-content;
+  padding: 0.8rem 1rem;
+  border-radius: 999px;
+  background: rgba(15,107,98,0.08);
+  color: var(--accent);
+  font-weight: 700;
+}
+.profile-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: min(100%, 280px);
+  padding: 0.95rem 1.1rem;
+  border-radius: 16px;
+  background: linear-gradient(145deg, rgba(255,255,255,0.96), rgba(240,245,249,0.95));
+  border: 1px solid rgba(17,32,51,0.08);
+  color: var(--navy);
+  font-weight: 700;
+  box-shadow: 0 10px 22px rgba(17,32,51,0.06);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.profile-link span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.profile-link:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 34px rgba(17,32,51,0.12);
+  border-color: rgba(15,107,98,0.18);
+}
+.profile-link span > i:first-child {
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15,107,98,0.08);
+  color: var(--accent);
+}
+.profile-link .fa-arrow-up-right-from-square {
+  color: var(--steel);
+  font-size: 0.9rem;
+}
+
+.footprint-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.15rem;
+}
+
+.footprint-card {
+  display: grid;
+  gap: 1rem;
+  padding: 1.45rem;
+  border-radius: 24px;
+  color: var(--navy);
+  text-decoration: none;
+  background-color: transparent;
+}
+
+.footprint-top,
+.footprint-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.footprint-kicker {
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(100, 116, 139, 0.82);
+}
+
+.footprint-mark {
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.55);
+}
+
+.footprint-mark i {
+  font-size: 1.08rem;
+}
+
+.footprint-body {
+  position: relative;
+  z-index: 1;
+}
+
+.footprint-body h3 {
+  font-size: 1.32rem;
+  line-height: 1.05;
+  margin-bottom: 0.42rem;
+}
+
+.footprint-body p {
+  font-size: 0.9rem;
+  color: rgba(51, 65, 85, 0.84);
+  line-height: 1.65;
+}
+
+.footprint-id {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 0.35rem 0.62rem;
+  border-radius: 999px;
+  font-size: 0.73rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  background: rgba(15,107,98,0.08);
+  color: rgba(22,38,58,0.76);
+}
+
+.footprint-arrow {
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.62);
+  color: var(--navy);
+  border: 1px solid rgba(17,32,51,0.08);
+  transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+}
+
+.footprint-watermark {
+  position: absolute;
+  right: 1.1rem;
+  bottom: 0.95rem;
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1;
+  color: rgba(17,32,51,0.06);
+  pointer-events: none;
+  letter-spacing: -0.03em;
+}
+
+.footprint-card:hover .footprint-arrow {
+  transform: translateX(4px);
+  background: rgba(255,255,255,0.86);
+  border-color: rgba(15,107,98,0.16);
+}
+
+.footprint-scholar .footprint-mark {
+  background: linear-gradient(145deg, rgba(41, 91, 170, 0.12), rgba(255,255,255,0.7));
+  color: #264f8f;
+}
+
+.footprint-gate .footprint-mark {
+  background: linear-gradient(145deg, rgba(15, 107, 98, 0.14), rgba(255,255,255,0.72));
+  color: #0f6b62;
+}
+
+.footprint-orcid .footprint-mark {
+  background: linear-gradient(145deg, rgba(124, 186, 64, 0.18), rgba(255,255,255,0.72));
+  color: #5c9e2f;
+}
+
+.lab-card {
+  background:
+    radial-gradient(circle at top right, rgba(185,121,52,0.18) 0%, transparent 28%),
+    linear-gradient(135deg, #0c1622 0%, #132130 46%, #183342 100%);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 28px 60px rgba(7,16,27,0.24);
+}
+.lab-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 80% 20%, rgba(204,170,116,0.12), transparent 24%),
+    linear-gradient(120deg, transparent 18%, rgba(255,255,255,0.03) 50%, transparent 82%);
+  pointer-events: none;
+}
+.lab-project {
+  min-height: 100%;
+  background:
+    radial-gradient(220px circle at var(--spot-x) var(--spot-y), rgb(255 255 255 / calc(var(--spot-opacity) * 0.18)) 0%, transparent 66%),
+    linear-gradient(180deg, rgba(255,255,255,0.11), rgba(255,255,255,0.05));
+}
+.lab-project:hover {
+  background:
+    radial-gradient(220px circle at var(--spot-x) var(--spot-y), rgb(255 255 255 / calc(var(--spot-opacity) * 0.2 + 0.04)) 0%, transparent 66%),
+    linear-gradient(180deg, rgba(255,255,255,0.13), rgba(255,255,255,0.07));
+}
+.lab-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-top: 1.4rem;
+  position: relative;
+  z-index: 1;
+}
+.lab-actions .btn {
+  min-width: auto;
+}
+.lab-actions .btn-outline {
+  background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04));
+  border-color: rgba(255,255,255,0.18);
+}
+
+.btn,
+.pub-filter,
+.profile-link {
+  transform: translateZ(0);
+}
+
+.cv-banner {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 22px 46px rgba(12,22,34,0.18);
+}
+.cv-banner::after {
+  content: '';
+  position: absolute;
+  inset: auto -10% -60% auto;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(15,107,98,0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+@media(max-width:900px){
+  .about-sidebar {
+    position: static;
+  }
+  .interests-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .interest-card,
+  .interest-card:nth-child(1),
+  .interest-card:nth-child(2) {
+    grid-column: span 1;
+  }
+  .hero-stats,
+  .pub-grid-dynamic { grid-template-columns: 1fr; }
+  .hero-actions .btn { min-width: 100%; }
+  .hero-portrait { width: min(100%, 340px); margin: 0 auto; }
+  .hero-badges { margin-bottom: 1rem; }
+}
+
+@media(max-width:560px){
+  .interests-grid {
+    grid-template-columns: 1fr;
+  }
+  .section-label {
+    padding: 0.38rem 0.72rem;
+  }
+  .section-title {
+    font-size: clamp(1.75rem, 8vw, 2.2rem);
+  }
+  .hero-role-stack {
+    gap: 0.5rem;
+  }
+  .hero-role-pill {
+    width: 100%;
+    justify-content: center;
+  }
+  .hero-role-line {
+    line-height: 1.45;
+  }
+  .hero-badges {
+    gap: 0.55rem;
+    margin: 1.3rem 0 1rem;
+  }
+  .hero-badge {
+    max-width: 100%;
+    min-height: 46px;
+    padding: 0.62rem 0.9rem;
+  }
+  .hero-actions {
+    gap: 0.8rem;
+  }
+  .hero-actions .btn {
+    padding: 0.9rem 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAVIGATION
+     ============================================================ -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo">Md Shoaib <span>Mahmud</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#research">Research</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#teaching">Teaching</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#awards">Honors</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="progress"><span id="progressBar"></span></div>
+</nav>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero" id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-label">
+        <div class="hero-role-stack">
+          <span class="hero-role-pill">Lecturer at MIST</span>
+          <span class="hero-role-pill">Research Associate</span>
+        </div>
+        <div class="hero-role-line">Risk-Informed Systems Engineering (RISE) Lab</div>
+      </div>
+      <h1>Md Shoaib Mahmud</h1>
+      <p class="hero-subtitle">
+        Lecturer and researcher in Industrial and Production Engineering, working at the intersection of operations research, graph neural networks, infrastructure resilience, and disaster-response analytics.
+      </p>
+      <p class="hero-subtitle" style="font-size:1rem; margin-top:-0.75rem; margin-bottom:1.5rem;">
+        My current work spans seismic vulnerability, urban flash-flood response, equity-aware ambulance dispatch, humanitarian logistics, and post-tornado power-grid restoration.
+      </p>
+      <div class="hero-badges">
+        <span class="hero-badge">Infrastructure resilience</span>
+        <span class="hero-badge">Graph neural networks</span>
+        <span class="hero-badge">Robust optimization</span>
+        <span class="hero-badge">Humanitarian logistics</span>
+      </div>
+      <div class="hero-actions">
+        <a href="#publications" class="btn btn-primary"><i class="fas fa-book"></i> View Research</a>
+        <a href="CV_Md Shoaib Mahmud.pdf" class="btn btn-outline" download="CV_Md_Shoaib_Mahmud.pdf"><i class="fas fa-file-arrow-down"></i> Download CV</a>
+        <a href="#contact" class="btn btn-outline"><i class="fas fa-envelope"></i> Get in Touch</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <strong>1</strong>
+          <span>Published journal article</span>
+        </div>
+        <div class="hero-stat">
+          <strong>6</strong>
+          <span>Conference proceedings</span>
+        </div>
+        <div class="hero-stat">
+          <strong>4</strong>
+          <span>Journal manuscripts under review</span>
+        </div>
+        <div class="hero-stat">
+          <strong>1</strong>
+          <span>Accepted conference paper</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-portrait">
+      <div class="hero-image-frame">
+        <img src="Shoaib photo.jpeg" alt="Portrait of Md Shoaib Mahmud">
+      </div>
+      <div class="hero-note">
+        <strong>Open to funded PhD opportunities</strong>
+        <p>Interested in resilient infrastructure, optimization under uncertainty, and AI-assisted decision support for disaster-affected communities.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     ABOUT
+     ============================================================ -->
+<section class="section" id="about">
+  <div class="section-inner fade-in">
+    <div class="section-header">
+      <div class="section-label">Introduction</div>
+      <h2 class="section-title">About Me</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="about-content">
+      <div class="about-text">
+        <p>I am a Lecturer in the Department of Industrial and Production Engineering at the Military Institute of Science and Technology (MIST), Dhaka, where I also completed my B.Sc. in Industrial and Production Engineering with a CGPA of 3.77/4.00 and ranked 4th among 51 graduates.</p>
+        <p>My research focuses on operations research and mixed-integer programming, prescriptive analytics for infrastructure resilience and disaster response, graph neural networks for network vulnerability and retrofit prioritization, and decision-making under uncertainty.</p>
+        <p>Most of my current infrastructure-focused work has been developed through the Risk-Informed Systems Engineering (RISE) Lab under the supervision of Dr. Himadri Sen Gupta, alongside my role as a Research Associate with Colorado State University Pueblo.</p>
+        <p>I also teach, supervise undergraduate thesis students, and mentor capstone projects, while remaining open to funded PhD opportunities aligned with resilient infrastructure and data-driven decision support.</p>
+      </div>
+      <div class="about-sidebar">
+        <div class="sidebar-item">
+          <div class="sidebar-label">Position</div>
+          <div class="sidebar-value">Lecturer, IPE</div>
+        </div>
+        <div class="sidebar-item">
+          <div class="sidebar-label">Institution</div>
+          <div class="sidebar-value">MIST, Bangladesh</div>
+        </div>
+        <div class="sidebar-item">
+          <div class="sidebar-label">Research Role</div>
+          <div class="sidebar-value">Research Associate, Risk-Informed Systems Engineering (RISE) Lab</div>
+        </div>
+        <div class="sidebar-item">
+          <div class="sidebar-label">Degree</div>
+          <div class="sidebar-value">B.Sc. in IPE (Ranked 4th / 51)</div>
+        </div>
+        <div class="sidebar-item">
+          <div class="sidebar-label">Seeking</div>
+          <div class="sidebar-value">Funded PhD Opportunities</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     RESEARCH INTERESTS
+     ============================================================ -->
+<section class="section section-alt" id="research">
+  <div class="section-inner fade-in">
+    <div class="section-header">
+      <div class="section-label">What I Work On</div>
+      <h2 class="section-title">Research Focus</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="interests-grid">
+      <div class="interest-card">
+        <div class="interest-icon"><i class="fas fa-bridge"></i></div>
+        <h3>Infrastructure Resilience</h3>
+        <p>Assessing vulnerability and optimizing recovery of transportation networks, power grids, and urban infrastructure following natural disasters.</p>
+      </div>
+      <div class="interest-card">
+        <div class="interest-icon"><i class="fas fa-brain"></i></div>
+        <h3>Graph Neural Networks</h3>
+        <p>Applying GNNs to capture network topology for seismic vulnerability assessment and retrofit prioritization of infrastructure systems.</p>
+      </div>
+      <div class="interest-card">
+        <div class="interest-icon"><i class="fas fa-chart-line"></i></div>
+        <h3>Prescriptive Analytics</h3>
+        <p>Developing pipelines that go beyond risk prediction to generate actionable response strategies for urban flood and disaster scenarios.</p>
+      </div>
+      <div class="interest-card">
+        <div class="interest-icon"><i class="fas fa-code-branch"></i></div>
+        <h3>Operations Research</h3>
+        <p>Mixed-integer programming and robust optimization for supply chain design, logistics network planning, and resource allocation.</p>
+      </div>
+      <div class="interest-card">
+        <div class="interest-icon"><i class="fas fa-truck-medical"></i></div>
+        <h3>Humanitarian Logistics</h3>
+        <p>Equity-aware dispatch and resource allocation models for post-disaster emergency response and community recovery.</p>
+      </div>
+      <div class="interest-card">
+        <div class="interest-icon"><i class="fas fa-rotate"></i></div>
+        <h3>Supply Chain Resilience</h3>
+        <p>Reverse logistics network design and optimization for semiconductor supply chains facing disruption and shortage.</p>
+      </div>
+      <div class="interest-card">
+        <div class="interest-icon"><i class="fas fa-diagram-project"></i></div>
+        <h3>Network Optimization</h3>
+        <p>Modeling and solving network-level decision problems for transportation, logistics, and infrastructure systems using mathematical programming.</p>
+      </div>
+      <div class="interest-card">
+        <div class="interest-icon"><i class="fas fa-square-root-variable"></i></div>
+        <h3>Mixed-Integer Programming</h3>
+        <p>Formulating and solving large-scale combinatorial optimization problems using MILP and IBM ILOG CPLEX for real-world engineering applications.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     RISE LAB
+     ============================================================ -->
+<section class="section" id="lab">
+  <div class="section-inner fade-in">
+    <div class="section-header">
+      <div class="section-label">Research Group</div>
+      <h2 class="section-title">Risk-Informed Systems Engineering (RISE) Lab</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="lab-card">
+      <div class="lab-header">
+        <div class="lab-icon"><i class="fas fa-microscope"></i></div>
+        <div>
+          <div class="lab-title">Current research programs and collaborations</div>
+          <div class="lab-supervisor">Under the supervision of Dr. Himadri Sen Gupta</div>
+        </div>
+      </div>
+      <p class="lab-desc">
+        Through the Risk-Informed Systems Engineering (RISE) Lab, I contribute to a set of connected research programs that move from infrastructure-risk modeling toward practical decision support for response, recovery, and long-term mitigation.
+      </p>
+      <div class="lab-actions">
+        <a href="https://www.h-gupta.com/" class="btn btn-outline" target="_blank" rel="noopener"><i class="fas fa-arrow-up-right-from-square"></i> Visit RISE Lab</a>
+      </div>
+      <div class="lab-projects">
+        <div class="lab-project">
+          <div class="lab-project-tag tag-review">Under Review</div>
+          <h4>Seismic network resilience</h4>
+          <p>Graph neural networks for seismic vulnerability assessment and retrofit prioritization across transportation networks.</p>
+          <div class="journal">Transportation-network risk and intervention planning</div>
+        </div>
+        <div class="lab-project">
+          <div class="lab-project-tag tag-review">Under Review</div>
+          <h4>Urban flash-flood response analytics</h4>
+          <p>A prescriptive analytics pipeline that converts calibrated flood risk into actionable response strategies for emergency managers.</p>
+          <div class="journal">Risk-to-response decision support</div>
+        </div>
+        <div class="lab-project">
+          <div class="lab-project-tag tag-review">Under Review</div>
+          <h4>Equity in emergency access</h4>
+          <p>Post-earthquake ambulance dispatch with explicit fairness constraints to reduce disparities in life-saving service access.</p>
+          <div class="journal">Equity-aware post-disaster response</div>
+        </div>
+        <div class="lab-project">
+          <div class="lab-project-tag tag-prep">In Preparation</div>
+          <h4>Post-tornado grid restoration</h4>
+          <p>Two-stage robust optimization with ML-informed vulnerability estimates for restoration sequencing under uncertainty.</p>
+          <div class="journal">Power-system recovery planning</div>
+        </div>
+        <div class="lab-project">
+          <div class="lab-project-tag tag-published">Published</div>
+          <h4>Community mitigation economics</h4>
+          <p>Quantifying how delay shapes cost escalation in floodplain property-buyout programs and long-run community mitigation decisions.</p>
+          <div class="journal">Published in Sustainability (2026)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     EXPERIENCE
+     ============================================================ -->
+<section class="section section-alt" id="experience">
+  <div class="section-inner fade-in">
+    <div class="section-header">
+      <div class="section-label">Experience</div>
+      <h2 class="section-title">Research, teaching, and applied work</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="experience-grid">
+      <div class="experience-card">
+        <div class="experience-icon"><i class="fas fa-flask"></i></div>
+        <div>
+          <div class="experience-meta">
+            <strong>2024 - Present</strong>
+            <span>Research Associate, Risk-Informed Systems Engineering (RISE) Lab, Colorado State University Pueblo</span>
+          </div>
+          <h3>Research in Infrastructure Systems Engineering</h3>
+          <p>Developing graph neural network models for seismic vulnerability, contributing to prescriptive analytics for urban flood response, and building robust optimization models for post-tornado power-grid restoration.</p>
+        </div>
+      </div>
+      <div class="experience-card">
+        <div class="experience-icon"><i class="fas fa-chalkboard-user"></i></div>
+        <div>
+          <div class="experience-meta">
+            <strong>Nov 2024 - Present</strong>
+            <span>Lecturer, Department of Industrial and Production Engineering, MIST</span>
+          </div>
+          <h3>Teaching and supervision</h3>
+          <p>Independently teaching theory and sessional courses, supervising undergraduate theses, and integrating CPLEX, Arena, and Python-based analytics tools into the curriculum.</p>
+        </div>
+      </div>
+      <div class="experience-card">
+        <div class="experience-icon"><i class="fas fa-book-open-reader"></i></div>
+        <div>
+          <div class="experience-meta">
+            <strong>Jun 2025 - Oct 2025</strong>
+            <span>Editor, Technical Paper Volume 3, Department of IPE, MIST</span>
+          </div>
+          <h3>Editorial coordination</h3>
+          <p>Led peer-review and editorial coordination for a departmental research volume featuring student and faculty work with attention to methodological rigor and clarity.</p>
+        </div>
+      </div>
+      <div class="experience-card">
+        <div class="experience-icon"><i class="fas fa-industry"></i></div>
+        <div>
+          <div class="experience-meta">
+            <strong>Feb 2023</strong>
+            <span>Industrial Trainee, British American Tobacco Bangladesh</span>
+          </div>
+          <h3>Applied analytics in industry</h3>
+          <p>Worked on Manual Management and Project Apollo analytics initiatives, built Power BI dashboards over operational datasets, and finished as a top-performing trainee.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PUBLICATIONS
+     ============================================================ -->
+<section class="section section-alt" id="publications">
+  <div class="section-inner fade-in">
+    <div class="section-header">
+      <div class="section-label">Scholarly Output</div>
+      <h2 class="section-title">Publications</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="pub-stats">
+      <div class="pub-stat">
+        <div class="pub-stat-num">1</div>
+        <div class="pub-stat-label">Journal Article</div>
+      </div>
+      <div class="pub-stat">
+        <div class="pub-stat-num">6</div>
+        <div class="pub-stat-label">Conference Proceedings</div>
+      </div>
+      <div class="pub-stat">
+        <div class="pub-stat-num">4</div>
+        <div class="pub-stat-label">Under Review</div>
+      </div>
+      <div class="pub-stat">
+        <div class="pub-stat-num">1</div>
+        <div class="pub-stat-label">Accepted</div>
+      </div>
+      <div class="pub-stat">
+        <div class="pub-stat-num">2</div>
+        <div class="pub-stat-label">In Preparation</div>
+      </div>
+    </div>
+
+    <div class="pub-filters" id="pubFilters">
+      <button class="pub-filter active" data-filter="all" type="button">All</button>
+      <button class="pub-filter" data-filter="journal" type="button">Journal</button>
+      <button class="pub-filter" data-filter="proceeding" type="button">Proceedings</button>
+      <button class="pub-filter" data-filter="review" type="button">Under Review</button>
+      <button class="pub-filter" data-filter="accepted" type="button">Accepted</button>
+      <button class="pub-filter" data-filter="prep" type="button">In Preparation</button>
+    </div>
+
+    <div class="pub-grid-dynamic" id="pubGrid"></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     EDUCATION
+     ============================================================ -->
+<section class="section" id="education">
+  <div class="section-inner fade-in">
+    <div class="section-header">
+      <div class="section-label">Academic Background</div>
+      <h2 class="section-title">Education</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-icon"><i class="fas fa-graduation-cap"></i></div>
+      <div>
+        <div class="edu-degree">B.Sc. in Industrial and Production Engineering</div>
+        <div class="edu-school">Military Institute of Science and Technology (MIST), Dhaka, Bangladesh</div>
+        <div class="edu-date">February 2020 - April 2024</div>
+        <div class="edu-highlights">
+          <span class="edu-badge"><i class="fas fa-star"></i> CGPA: 3.77 / 4.00</span>
+          <span class="edu-badge"><i class="fas fa-ranking-star"></i> Ranked 4th / 51</span>
+          <span class="edu-badge"><i class="fas fa-award"></i> Dean's List Honoree</span>
+          <span class="edu-badge"><i class="fas fa-medal"></i> Merit Scholarship</span>
+        </div>
+        <div class="thesis-box">
+          <h4>Thesis: Reverse Logistics Network Design for Semiconductor Supply Chain</h4>
+          <p>Developed a mixed-integer linear program (MILP) integrating forward and reverse logistics to mitigate semiconductor chip shortages. Formulated and solved using IBM ILOG CPLEX. Designed a quick-response reverse logistics network to recover, test, and redeploy functional chips, reducing new facility requirements and shortening delivery lead times.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     TEACHING
+     ============================================================ -->
+<section class="section section-alt" id="teaching">
+  <div class="section-inner fade-in">
+    <div class="section-header">
+      <div class="section-label">Academic Instruction</div>
+      <h2 class="section-title">Teaching</h2>
+      <div class="section-line"></div>
+    </div>
+    <p style="font-size:0.95rem;color:var(--slate);margin-bottom:2rem;max-width:760px;">
+      As a Lecturer at MIST (November 2024 to present), I teach both theory and sessional courses in the Department of Industrial and Production Engineering, supervise undergraduate thesis students, and mentor capstone projects that apply optimization, simulation, and statistical methods to real problems.
+    </p>
+    <div class="teaching-grid">
+      <div class="teaching-card">
+        <h3>Theory Courses</h3>
+        <ul class="course-list">
+          <li>IPE 419 - Modeling and Simulation</li>
+          <li>IPE 101 - Introduction to IPE</li>
+          <li>IPE 107 - Engineering Economy</li>
+          <li>MATH 215 - Numerical Analysis</li>
+          <li>IPE 317 - Ergonomics and Safety Management</li>
+        </ul>
+      </div>
+      <div class="teaching-card">
+        <h3>Laboratory / Sessional Courses</h3>
+        <ul class="course-list">
+          <li>Engineering Graphics and CAD Sessional</li>
+          <li>Probability and Statistics Sessional</li>
+          <li>Operations Research Sessional</li>
+          <li>Ergonomics and Safety Management Sessional</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SKILLS
+     ============================================================ -->
+<section class="section" id="skills">
+  <div class="section-inner fade-in">
+    <div class="section-header">
+      <div class="section-label">Technical Toolkit</div>
+      <h2 class="section-title">Skills &amp; Tools</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <h3>Programming</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">C</span>
+          <span class="skill-tag">C++</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3>Optimization</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">IBM ILOG CPLEX</span>
+          <span class="skill-tag">MILP Formulation</span>
+          <span class="skill-tag">Robust Optimization</span>
+          <span class="skill-tag">Stochastic Optimization</span>
+          <span class="skill-tag">Network Optimization</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3>Machine Learning</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">Graph Neural Networks</span>
+          <span class="skill-tag">Regression Pipelines</span>
+          <span class="skill-tag">Classification Pipelines</span>
+          <span class="skill-tag">scikit-learn</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3>Simulation &amp; Statistics</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">Arena</span>
+          <span class="skill-tag">Minitab</span>
+          <span class="skill-tag">SPSS</span>
+          <span class="skill-tag">Power BI</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3>CAD &amp; Design</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">SOLIDWORKS</span>
+          <span class="skill-tag">CATIA</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3>Scientific Writing</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">LaTeX</span>
+          <span class="skill-tag">Microsoft Office</span>
+          <span class="skill-tag">Reference Management</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     AWARDS
+     ============================================================ -->
+<section class="section section-alt" id="awards">
+  <div class="section-inner fade-in">
+    <div class="section-header">
+      <div class="section-label">Recognition</div>
+      <h2 class="section-title">Honors &amp; Leadership</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="awards-grid">
+      <div class="award-card">
+        <div class="award-icon"><i class="fas fa-trophy"></i></div>
+        <div>
+          <h3>Dean's List of Honor</h3>
+          <div class="award-date">2020 - 2023</div>
+          <p>Awarded for graduating with a CGPA above 3.75 considering the results of the entire program at MIST.</p>
+        </div>
+      </div>
+      <div class="award-card">
+        <div class="award-icon"><i class="fas fa-medal"></i></div>
+        <div>
+          <h3>University Merit Scholarship</h3>
+          <div class="award-date">2021 - 2023</div>
+          <p>Awarded for achieving a top-three class position in a semester.</p>
+        </div>
+      </div>
+      <div class="award-card">
+        <div class="award-icon"><i class="fas fa-certificate"></i></div>
+        <div>
+          <h3>Top-Performing Trainee</h3>
+          <div class="award-date">February 2023</div>
+          <p>Recognized for exceptional performance during the Industrial Attachment Program at British American Tobacco Bangladesh.</p>
+        </div>
+      </div>
+      <div class="award-card">
+        <div class="award-icon"><i class="fas fa-users"></i></div>
+        <div>
+          <h3>Director of Program</h3>
+          <div class="award-date">2023 - 2024</div>
+          <p>Led the IEOM MIST Student Chapter, organizing workshops on Supply Chain Management and MATLAB.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CV DOWNLOAD
+     ============================================================ -->
+<section class="section" id="cv">
+  <div class="section-inner fade-in">
+    <div class="cv-banner">
+      <h3>Curriculum Vitae</h3>
+      <p>For a complete overview of my academic background, research, and experience.</p>
+      <a href="CV_Md Shoaib Mahmud.pdf" class="btn btn-primary" download="CV_Md_Shoaib_Mahmud.pdf"><i class="fas fa-download"></i> Download CV (PDF)</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     RESEARCH PROFILES
+     ============================================================ -->
+<section class="section" id="footprint">
+  <div class="section-inner fade-in">
+    <div class="section-header">
+      <div class="section-label">Academic Presence</div>
+      <h2 class="section-title">Research Profiles</h2>
+      <div class="section-line"></div>
+      <p class="section-intro">Explore my citation indexing, researcher-network presence, and persistent scholarly identifier through the verified profiles below.</p>
+    </div>
+    <div class="footprint-grid">
+      <a href="https://scholar.google.com/citations?user=QJAoTLYAAAAJ&hl=en" class="footprint-card footprint-scholar" target="_blank" rel="noopener">
+        <div class="footprint-top">
+          <span class="footprint-mark"><i class="fas fa-book-open-reader"></i></span>
+          <span class="footprint-kicker">Citation Index</span>
+        </div>
+        <div class="footprint-body">
+          <h3>Google Scholar</h3>
+          <p>Follow indexed publications, citation visibility, and the broader scholarly record connected to my research output.</p>
+        </div>
+        <div class="footprint-meta">
+          <span class="footprint-id">Verified profile</span>
+          <span class="footprint-arrow"><i class="fas fa-arrow-up-right-from-square"></i></span>
+        </div>
+        <div class="footprint-watermark">Scholar</div>
+      </a>
+
+      <a href="https://www.researchgate.net/profile/Md-Shoaib-Mahmud?ev=hdr_xprf" class="footprint-card footprint-gate" target="_blank" rel="noopener">
+        <div class="footprint-top">
+          <span class="footprint-mark"><i class="fas fa-microscope"></i></span>
+          <span class="footprint-kicker">Academic Network</span>
+        </div>
+        <div class="footprint-body">
+          <h3>ResearchGate</h3>
+          <p>See publication updates, research visibility across academic communities, and profile-based engagement on an external research network.</p>
+        </div>
+        <div class="footprint-meta">
+          <span class="footprint-id">Research community profile</span>
+          <span class="footprint-arrow"><i class="fas fa-arrow-up-right-from-square"></i></span>
+        </div>
+        <div class="footprint-watermark">RG</div>
+      </a>
+
+      <a href="https://orcid.org/my-orcid?orcid=0009-0002-6526-4173" class="footprint-card footprint-orcid" target="_blank" rel="noopener">
+        <div class="footprint-top">
+          <span class="footprint-mark"><i class="fab fa-orcid"></i></span>
+          <span class="footprint-kicker">Research Identifier</span>
+        </div>
+        <div class="footprint-body">
+          <h3>ORCID Record</h3>
+          <p>Access my persistent researcher identifier and profile record for consistent attribution across publications and academic systems.</p>
+        </div>
+        <div class="footprint-meta">
+          <span class="footprint-id">0009-0002-6526-4173</span>
+          <span class="footprint-arrow"><i class="fas fa-arrow-up-right-from-square"></i></span>
+        </div>
+        <div class="footprint-watermark">ORCID</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CONTACT
+     ============================================================ -->
+<section class="section section-alt" id="contact">
+  <div class="section-inner fade-in">
+    <div class="section-header">
+      <div class="section-label">Reach Out</div>
+      <h2 class="section-title">Contact</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-panel">
+        <h3>Let's connect</h3>
+        <p>I am open to funded PhD opportunities, research collaborations, and academic discussions on infrastructure resilience, optimization under uncertainty, and disaster-response decision support.</p>
+        <div class="contact-compact">
+          <span class="contact-pill"><i class="fas fa-envelope"></i> shoaib@ipe.mist.ac.bd</span>
+          <span class="contact-pill"><i class="fas fa-phone"></i> +880 1734-355994</span>
+          <span class="contact-pill"><i class="fas fa-location-dot"></i> Dept. of IPE, MIST, Dhaka, Bangladesh</span>
+        </div>
+        <div class="contact-actions" style="margin-top:1.25rem;">
+          <a href="mailto:shoaib@ipe.mist.ac.bd?subject=Research%20Inquiry" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Email Shoaib</a>
+          <a href="CV_Md Shoaib Mahmud.pdf" class="btn btn-outline" download="CV_Md_Shoaib_Mahmud.pdf"><i class="fas fa-file-arrow-down"></i> Download CV</a>
+        </div>
+      </div>
+      <div class="contact-panel">
+        <h3>Professional links</h3>
+        <p>Verified institutional and professional links for my faculty presence, public profile, and direct academic visibility.</p>
+        <div class="pub-links" style="margin-top:1.1rem;">
+          <a href="https://www.linkedin.com/in/md-shoaib-mahmud/" class="profile-link" target="_blank" rel="noopener">
+            <span><i class="fab fa-linkedin-in"></i> LinkedIn</span>
+            <i class="fas fa-arrow-up-right-from-square"></i>
+          </a>
+          <a href="https://mist.ac.bd/department/ipe/facultyMembers/md_shoaib_mahmud-757" class="profile-link" target="_blank" rel="noopener">
+            <span><i class="fas fa-building-columns"></i> MIST Faculty Profile</span>
+            <i class="fas fa-arrow-up-right-from-square"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <p>&copy; 2026 Md Shoaib Mahmud. All rights reserved.</p>
+</footer>
+
+<!-- ============================================================
+     SCRIPTS
+     ============================================================ -->
+<script>
+const nav = document.getElementById('nav');
+const toggle = document.getElementById('navToggle');
+const links = document.getElementById('navLinks');
+const navAnchors = [...links.querySelectorAll('a')];
+const progressBar = document.getElementById('progressBar');
+const sectionIds = ['about', 'research', 'experience', 'publications', 'teaching', 'education', 'awards', 'contact'];
+const hero = document.getElementById('hero');
+
+const publications = [
+  { status: 'journal', year: '2026', title: 'Quantifying the cost of delay in floodplain property buyouts', authors: 'Zaman, T. A. B., <strong>Mahmud, M. S.</strong>, Gupta, H. S., Harati, M., &amp; van de Lindt, J. W.', venue: '<em>Sustainability</em>, 18(6), 2675.', note: 'Published journal article.', url: 'https://doi.org/10.3390/su18062675' },
+  { status: 'proceeding', year: '2025', title: 'Data-driven application of the newsvendor model for retail inventory optimization using forecast-error demand estimation', authors: '<strong>Mahmud, M. S.</strong>, Saad, S. I., &amp; Miazi, M. H.', venue: 'Proceedings of the 8th IEOM Bangladesh International Conference on Industrial Engineering and Operations Management, Dhaka, Bangladesh.', note: 'Conference proceeding.', url: 'https://doi.org/10.46254/BA08.20250372' },
+  { status: 'proceeding', year: '2025', title: 'The systematic design and manufacturing of \'Mr. Money Manager\': An advanced money management device', authors: 'Rubaet, M., <strong>Mahmud, M. S.</strong>, Mukit, M. U. A., Mithu, M. S. H., Islam, M. A., &amp; Sakib, M. I. A.', venue: 'Proceedings of the 8th IEOM Bangladesh International Conference on Industrial Engineering and Operations Management, Dhaka, Bangladesh.', note: 'Conference proceeding.', url: 'https://doi.org/10.46254/BA08.20250054' },
+  { status: 'proceeding', year: '2025', title: 'Dynamic staffing optimization for institutional dining services: An Erlang C queueing approach', authors: 'Debnath, A., &amp; <strong>Mahmud, M. S.</strong>', venue: 'Proceedings of the 8th IEOM Bangladesh International Conference on Industrial Engineering and Operations Management, Dhaka, Bangladesh.', note: 'Conference proceeding.', url: 'https://doi.org/10.46254/BA08.20250081' },
+  { status: 'review', year: '2025', title: 'Graph neural networks for seismic vulnerability assessment and retrofit prioritization of transportation networks', authors: '<strong>Mahmud, M. S.</strong>, Ikbal, M. N., Gupta, H. S., Sanderson, D., &amp; Biswas, S.', venue: '<em>Reliability Engineering &amp; System Safety</em>.', note: 'Under review (JRESS-D-25-05531).' },
+  { status: 'review', year: '2025', title: 'From calibrated risk to actionable response: A prescriptive analytics pipeline for urban flash floods', authors: 'Gupta, H. S., <strong>Mahmud, M. S.</strong>, &amp; Gupta, A.', venue: '<em>Resilient Cities and Structures</em>.', note: 'Under review (RCNS-D-25-00275).' },
+  { status: 'review', year: '2025', title: 'Equity-aware ambulance dispatch after earthquakes', authors: 'Gupta, H. S., Saad, S. I., <strong>Mahmud, M. S.</strong>, &amp; Biswas, S.', venue: '<em>Safety Science</em>.', note: 'Under review (SAFETY-D-25-03429).' },
+  { status: 'review', year: '2024', title: 'Profit-oriented pricing combinations using RSM-ANN', authors: 'Alam, S. T., Ahmed, T., Haque, T., <strong>Mahmud, M. S.</strong>, &amp; Kaisar, T. I.', venue: '<em>Discover Applied Sciences</em>.', note: 'Under review.' },
+  { status: 'accepted', year: '2025', title: 'Reducing delivery time in electric VRPs through adaptive partial recharging', authors: 'Saad, S. I., <strong>Mahmud, M. S.</strong>, Tani, T. I., Ishrak, A. M., Mumtaj, S., &amp; Tinni, T. I.', venue: 'Proceedings of the 4th International Conference on Innovations in Data Analytics, Kolkata, India.', note: 'Accepted.' },
+  { status: 'prep', year: '2026', title: 'Post-tornado power grid restoration: A two-stage robust optimization model with ML-informed vulnerability', authors: '<strong>Mahmud, M. S.</strong>, Sen Gupta, H., &amp; Wang, W.', venue: 'Target: <em>Reliability Engineering &amp; System Safety</em>.', note: 'Manuscript in preparation.' },
+  { status: 'prep', year: '2025', title: 'Reverse logistics network design for the semiconductor supply chain: An optimization approach', authors: '<strong>Mahmud, M. S.</strong>, Haque, T., &amp; Ahmed, T.', venue: 'Target: <em>Brazilian Journal of Operations and Production Management</em>.', note: 'Manuscript in preparation.' },
+  { status: 'proceeding', year: '2023', title: 'A comparative analysis of assignment problem', authors: 'Alam, S. T., Sagor, E., Ahmed, T., Haque, T., <strong>Mahmud, M. S.</strong>, Ibrahim, S., Shahjahan, O., &amp; Rubaet, M.', venue: 'In <em>Big Data Innovation for Sustainable Cognitive Computing</em>, Springer Nature.', note: 'Conference proceeding / book chapter.', url: 'https://doi.org/10.1007/978-3-031-28324-6_11' },
+  { status: 'proceeding', year: '2022', title: 'Assessment of assignment problem using Hungarian method', authors: 'Alam, S. T., Sagor, E., Ahmed, T., Haque, T., <strong>Mahmud, M. S.</strong>, Ibrahim, S., &amp; Rubaet, M.', venue: 'Proceedings of the 1st Australian Conference on Industrial Engineering and Operations Management, Sydney, Australia.', note: 'Conference proceeding.' },
+  { status: 'proceeding', year: '2022', title: 'A comparative analysis of balanced transportation problems', authors: 'Alam, S. T., Sagor, E., Ahmed, T., Haque, T., &amp; <strong>Mahmud, M. S.</strong>', venue: 'Proceedings of the International Conference on Mechanical Engineering and Applied Sciences (ICMEAS 2022), MIST, Dhaka, Bangladesh.', note: 'Conference proceeding.' }
+];
+
+const publicationMeta = {
+  journal: { label: 'Journal Article', className: 'journal' },
+  proceeding: { label: 'Conference Proceeding', className: 'proceeding' },
+  review: { label: 'Under Review', className: 'review' },
+  accepted: { label: 'Accepted', className: 'accepted' },
+  prep: { label: 'In Preparation', className: 'prep' }
+};
+
+const heroMotion = { targetX: 0, targetY: 0, currentX: 0, currentY: 0, frame: null };
+
+function animateHeroMotion() {
+  heroMotion.currentX += (heroMotion.targetX - heroMotion.currentX) * 0.08;
+  heroMotion.currentY += (heroMotion.targetY - heroMotion.currentY) * 0.08;
+  if (hero) {
+    hero.style.setProperty('--hero-x', `${heroMotion.currentX.toFixed(2)}px`);
+    hero.style.setProperty('--hero-y', `${heroMotion.currentY.toFixed(2)}px`);
+  }
+  const settled = Math.abs(heroMotion.targetX - heroMotion.currentX) < 0.08 && Math.abs(heroMotion.targetY - heroMotion.currentY) < 0.08;
+  if (!settled) {
+    heroMotion.frame = window.requestAnimationFrame(animateHeroMotion);
+  } else {
+    heroMotion.frame = null;
+  }
+}
+
+if (hero) {
+  hero.addEventListener('pointermove', (event) => {
+    const rect = hero.getBoundingClientRect();
+    heroMotion.targetX = ((event.clientX - rect.left) / rect.width - 0.5) * 28;
+    heroMotion.targetY = ((event.clientY - rect.top) / rect.height - 0.5) * 20;
+    if (!heroMotion.frame) heroMotion.frame = window.requestAnimationFrame(animateHeroMotion);
+  });
+
+  hero.addEventListener('pointerleave', () => {
+    heroMotion.targetX = 0;
+    heroMotion.targetY = 0;
+    if (!heroMotion.frame) heroMotion.frame = window.requestAnimationFrame(animateHeroMotion);
+  });
+}
+
+const spotlightSelector = '.hero-stat, .interest-card, .lab-project, .experience-card, .pub-card-dynamic, .teaching-card, .skill-group, .award-card, .edu-card, .contact-panel, .pub-stat, .footprint-card';
+
+function bindSpotlights(scope = document) {
+  if (!window.matchMedia('(pointer:fine)').matches) return;
+
+  scope.querySelectorAll(spotlightSelector).forEach((card) => {
+    if (card.dataset.spotlightBound === 'true') return;
+    card.dataset.spotlightBound = 'true';
+
+    const updateSpotlight = (event) => {
+      const rect = card.getBoundingClientRect();
+      const x = ((event.clientX - rect.left) / rect.width) * 100;
+      const y = ((event.clientY - rect.top) / rect.height) * 100;
+      card.style.setProperty('--spot-x', `${x.toFixed(2)}%`);
+      card.style.setProperty('--spot-y', `${y.toFixed(2)}%`);
+      card.style.setProperty('--spot-opacity', '1');
+    };
+
+    card.addEventListener('pointerenter', updateSpotlight);
+    card.addEventListener('pointermove', updateSpotlight);
+    card.addEventListener('pointerleave', () => {
+      card.style.setProperty('--spot-opacity', '0');
+    });
+  });
+}
+
+function updateScrollState() {
+  nav.classList.toggle('scrolled', window.scrollY > 20);
+  const maxScroll = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  if (progressBar) {
+    progressBar.style.transform = `scaleX(${maxScroll > 0 ? window.scrollY / maxScroll : 0})`;
+  }
+  let activeId = 'about';
+  sectionIds.forEach((id) => {
+    const section = document.getElementById(id);
+    if (section && window.scrollY >= section.offsetTop - 140) activeId = id;
+  });
+  navAnchors.forEach((anchor) => {
+    anchor.classList.toggle('active', anchor.getAttribute('href') === `#${activeId}`);
+  });
+}
+
+window.addEventListener('scroll', updateScrollState, { passive: true });
+updateScrollState();
+
+toggle.addEventListener('click', () => {
+  links.classList.toggle('open');
+});
+
+navAnchors.forEach((anchor) => {
+  anchor.addEventListener('click', () => links.classList.remove('open'));
+});
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+function observeFadeIns() {
+  document.querySelectorAll('.fade-in').forEach((element) => {
+    if (!element.classList.contains('visible')) observer.observe(element);
+  });
+}
+
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (!entry.isIntersecting) return;
+    const element = entry.target;
+    const target = Number(element.dataset.countTarget || element.textContent.trim());
+    if (!Number.isFinite(target)) return;
+    element.dataset.countTarget = String(target);
+    const start = performance.now();
+    const duration = 900;
+
+    function tick(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      element.textContent = String(Math.round(target * progress));
+      if (progress < 1) {
+        window.requestAnimationFrame(tick);
+      } else {
+        element.textContent = String(target);
+      }
+    }
+
+    element.textContent = '0';
+    window.requestAnimationFrame(tick);
+    counterObserver.unobserve(element);
+  });
+}, { threshold: 0.5 });
+
+function renderPublications(filter = 'all') {
+  const container = document.getElementById('pubGrid');
+  if (!container) return;
+  const list = filter === 'all' ? publications : publications.filter((item) => item.status === filter);
+  container.innerHTML = list.map((item, index) => `
+    <article class="pub-card-dynamic fade-in" style="transition-delay:${Math.min(index * 45, 220)}ms;">
+      <div class="pub-card-top">
+        <span class="pub-pill ${publicationMeta[item.status].className}">${publicationMeta[item.status].label}</span>
+        <span class="pub-year">${item.year}</span>
+      </div>
+      <div class="pub-title">${item.title}</div>
+      <p class="pub-authors">${item.authors}</p>
+      <p class="pub-venue">${item.venue}</p>
+      <p class="pub-note">${item.note}</p>
+      ${item.url ? `<a class="pub-link" href="${item.url}" target="_blank" rel="noopener">View DOI <i class="fas fa-arrow-up-right-from-square"></i></a>` : ''}
+    </article>
+  `).join('');
+  if (container.animate) {
+    container.animate(
+      [
+        { opacity: 0.45, transform: 'translateY(14px)' },
+        { opacity: 1, transform: 'translateY(0)' }
+      ],
+      { duration: 320, easing: 'cubic-bezier(0.2, 0.7, 0.2, 1)' }
+    );
+  }
+  bindSpotlights(container);
+  observeFadeIns();
+}
+
+const pubFilters = [...document.querySelectorAll('.pub-filter')];
+pubFilters.forEach((button) => {
+  button.addEventListener('click', () => {
+    pubFilters.forEach((candidate) => candidate.classList.remove('active'));
+    button.classList.add('active');
+    renderPublications(button.dataset.filter);
+  });
+});
+
+renderPublications();
+bindSpotlights();
+observeFadeIns();
+document.querySelectorAll('.hero-stat strong, .pub-stat-num').forEach((element) => counterObserver.observe(element));
+</script>
+
+</body>
+</html>
